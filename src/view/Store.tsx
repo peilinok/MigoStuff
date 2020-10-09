@@ -1,10 +1,32 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text,Button } from 'react-native';
 
-function StoreScreen() {
+import * as StoreModel from '../model/store';
+
+
+
+const StoreScreen = ()=> {
+  const [content,setContent] = React.useState('仓库1');
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>仓库</Text>
+      <Text>{content}</Text>
+      <Button
+        title="Go to Details"
+        onPress={() => {
+            StoreModel.createStore('仓库1','大街222号')
+            .then(value=>{
+              setContent(value.name);
+                StoreModel.queryAllStore()
+                .then(value=>{
+                    console.info(value.length);                    
+                })
+                .catch(error=>{})
+            })
+            .catch(error=>{})
+            
+        }}
+      />
     </View>
   );
 }
