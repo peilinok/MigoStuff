@@ -22,10 +22,10 @@ export function updateStore(id:string,name?:string,address?:string){
     return RealmUtil.updateOneRealm<StoreType>(id,{name,address},StoreTabName);
 }
 
-export function queryOneStore(id:string){
-    return RealmUtil.queryOneFromRealm<StoreType>(id,StoreTabName);
+export function queryStoreById(id:string){
+    return RealmUtil.queryFromRealmById<StoreType[]>(id,StoreTabName);
 }
 
 export function queryAllStore(){
-    return RealmUtil.queryAllFromRealm(StoreTabName);
+    return RealmUtil.queryAllFromRealm<StoreType[]>(StoreTabName);
 }

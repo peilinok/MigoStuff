@@ -109,7 +109,7 @@ export function queryAllFromRealm<T>(tabName:string) {
     })
 }
 
-export function queryOneFromRealm<T>(id:string,tabName:string) {
+export function queryFromRealmById<T>(id:string,tabName:string) {
     return new Promise<T>((resolve, reject) => {
         try{
         let arrays = instance.objects(tabName);
@@ -123,6 +123,20 @@ export function queryOneFromRealm<T>(id:string,tabName:string) {
     })
 }
 
+
+export function queryFromRealm<T>(filter:{key:string,value:string},tabName:string) {
+    return new Promise<T>((resolve, reject) => {
+        try{
+        let arrays = instance.objects(tabName);
+        let rows = arrays.filtered(filter.key + '==' + filter.value);
+        let objStr = JSON.stringify(rows);
+        resolve(JSON.parse(objStr) as unknown as T)
+        }
+        catch(e){
+            reject(e);
+        }
+    })
+}
 export function clearAllFromRealm(tabName:string) {
     return new Promise<boolean>((resolve, reject) => {
         try{
