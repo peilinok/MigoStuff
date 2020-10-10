@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -12,6 +13,7 @@ import StoreScreen from './src/view/Store';
 const Tab = createBottomTabNavigator();
 function App() {
   return (
+    <SafeAreaProvider>
     <NavigationContainer>
       <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -47,6 +49,7 @@ function App() {
         <Tab.Screen name="StoreScreen" component={StoreScreen}  options={{ tabBarLabel: '仓库' }}/>
       </Tab.Navigator>
     </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
