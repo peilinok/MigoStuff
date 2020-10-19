@@ -2,7 +2,7 @@ import * as RealmUtil from './realmutil';
 
 const StoreTabName = 'Store';
 
-declare type StoreType = {
+export declare type StoreType = {
     id:string;
     name:string;
     address:string;
