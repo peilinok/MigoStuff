@@ -14,29 +14,54 @@ const StoreItem = (props:{item:StoreModel.StoreType})=>{
   );
 }
 
-const StoreScreen = ()=> {
-  const [content,setContent] = React.useState('仓库1');
-  const [storeList,setStoreList] = React.useState<StoreModel.StoreType[]>([] as StoreModel.StoreType[]);
-  const [refreshing,setRefreshing] = React.useState(false);
-  const renderItem = ({item}:{item:StoreModel.StoreType}) =>(
-    <StoreItem item={item}/>
-  );
+declare type StoreScreenProps = {
 
-  const onRefresh= React.useCallback(()=>{
-    setRefreshing(true);
+}
+
+declare type StoreScreenState = {
+  content:string;
+  storeList:StoreModel.StoreType[];
+  refreshing:boolean;
+}
+
+class StoreScreen extends React.Component<StoreScreenProps,StoreScreenState> {
+  constructor(props:StoreScreenProps){
+    super(props);
+    this.state = {
+      content:'仓库1',
+      storeList:[],
+      refreshing:false
+    };
+
+    this.renderItem = this.renderItem.bind(this);
+    this.onRefresh = this.onRefresh.bind(this);
+  }
+
+  componentDidMount(){
+    this.onRefresh();
+  }
+
+  renderItem({item}:{item:StoreModel.StoreType}) {
+    return (
+    <StoreItem item={item}/>
+    );
+  };
+
+  onRefresh(){
+    this.setState({refreshing:true});
 
     StoreModel.queryAllStore()
     .then(value=>{
-      setStoreList(value);
-      setRefreshing(false);
+      this.setState({refreshing:false,storeList:value});
       console.info(value.length);                    
     })
     .catch(error=>{
       console.error(error);
     })
-  },[]);
+  };
 
-  
+  render(){
+    const {content,storeList,refreshing} = this.state;
   return (
     <SafeAreaView style={styles.container}>
       <Text>{content}</Text>
@@ -45,8 +70,8 @@ const StoreScreen = ()=> {
         onPress={() => {
             StoreModel.createStore('仓库2','大街222号')
             .then(value=>{
-              setContent(value.name);
-              ToastShow(value.name);
+              this.setState({content:value.name});
+              ToastShow(value.id);
             })
             .catch(error=>{
               console.error(error);
@@ -56,16 +81,17 @@ const StoreScreen = ()=> {
 
       <FlatList
       data={storeList}
-      renderItem={renderItem}
+      renderItem={this.renderItem}
       keyExtractor={item=>item.id}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+        <RefreshControl refreshing={refreshing} onRefresh={this.onRefresh}/>
       }
       >
 
       </FlatList>
     </SafeAreaView>
   );
+    }
 }
 
 const styles = StyleSheet.create({
