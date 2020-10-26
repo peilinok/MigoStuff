@@ -1,0 +1,20 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+
+  "search.exclude": {
+    ".git": true,
+    ".eslintcache": true,
+    "dist": true,
+    "build": true,
+    "node_modules": true,
+    "npm-debug.log.*": true,
+    "yarn.lock": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
